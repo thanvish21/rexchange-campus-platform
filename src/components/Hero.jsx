@@ -1,23 +1,11 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react'
 import GlowCard from './GlowCard.jsx'
 import Icon from './Icon.jsx'
 import { sounds } from '../utils/audio.js'
 import './Hero.css'
 
 export function Hero() {
-  const [heroSearch, setHeroSearch] = useState('')
   const navigate = useNavigate()
-
-  const handleHeroSearchSubmit = (e) => {
-    e.preventDefault()
-    sounds.playSnap()
-    if (heroSearch.trim()) {
-      navigate(`/browse?search=${encodeURIComponent(heroSearch.trim())}`)
-    } else {
-      navigate('/browse')
-    }
-  }
 
   const handleChipClick = (category) => {
     sounds.playPop()
@@ -28,79 +16,66 @@ export function Hero() {
     <section className="hero" aria-labelledby="hero-title">
       <div className="container">
         <div className="hero-grid">
-          {/* Main Hero Content Column */}
+          {/* Left Main Hero Column */}
           <div className="hero-content">
-            {/* Simple Eyebrow Badge */}
+            {/* Eyebrow Badge */}
             <div className="hero-eyebrow animate-fade-in-up">
               <span className="eyebrow-badge">
-                <span className="live-dot" /> SRM Campus Peer Exchange
+                THE CAMPUS EXCHANGE NETWORK
               </span>
             </div>
 
-            {/* Clean, Readable Headline */}
+            {/* Headline */}
             <h1 id="hero-title" className="hero-headline">
-              Buy, sell, and borrow student gear across your campus.
+              <span className="headline-main">Everything your campus already has.</span>
+              <span className="headline-sub">Now, you can actually find it.</span>
             </h1>
 
-            {/* Clear Subtitle */}
+            {/* Subtitle */}
             <p className="hero-subtitle">
-              Connect with verified students in your hostels to trade textbooks, calculators, study notes, and dorm essentials with zero platform fees.
+              Exchange resources, discover opportunities, find teammates, and connect with students who can help you move faster.
             </p>
-
-            {/* Clean Hero Search Bar */}
-            <form className="hero-search-form animate-fade-in-up" onSubmit={handleHeroSearchSubmit}>
-              <div className="hero-search-wrap">
-                <span className="hero-search-icon"><Icon name="search" size={18} /></span>
-                <input
-                  type="text"
-                  className="hero-search-input"
-                  placeholder="Search textbooks, calculators, notes, or dorm gear..."
-                  value={heroSearch}
-                  onChange={(e) => setHeroSearch(e.target.value)}
-                />
-                <button type="submit" className="btn btn--primary hero-search-btn">
-                  Search
-                </button>
-              </div>
-            </form>
 
             {/* Action Buttons */}
             <div className="hero-cta-group animate-fade-in-up">
               <Link
                 to="/browse"
-                className="btn btn--primary hero-cta-primary"
+                className="btn btn--primary hero-cta-purple"
                 onClick={() => sounds.playPop()}
               >
-                Browse Marketplace →
+                Explore RExchange →
               </Link>
 
               <Link
                 to="/matching"
-                className="btn btn--ghost hero-cta-secondary"
+                className="btn btn--ghost hero-cta-ghost"
                 onClick={() => sounds.playPop()}
               >
                 Find a Teammate
               </Link>
             </div>
 
-            {/* Quick Category Chips */}
+            {/* Available on Campus Subbar */}
             <div className="hero-subbar animate-fade-in-up">
-              <span className="subbar-label">Popular Categories:</span>
+              <span className="subbar-label">AVAILABLE ON CAMPUS:</span>
               <div className="subbar-chips">
                 <button type="button" className="subbar-chip" onClick={() => handleChipClick('Textbooks')}>
-                  📚 Textbooks
-                </button>
-                <button type="button" className="subbar-chip" onClick={() => handleChipClick('Electronics')}>
-                  💻 Calculators & Electronics
+                  <Icon name="book" size={13} /> Textbooks
                 </button>
                 <button type="button" className="subbar-chip" onClick={() => handleChipClick('Notes')}>
-                  📝 Study Notes
+                  <Icon name="code" size={13} /> Notes
+                </button>
+                <button type="button" className="subbar-chip" onClick={() => handleChipClick('Electronics')}>
+                  <Icon name="cpu" size={13} /> Electronics
                 </button>
                 <button type="button" className="subbar-chip" onClick={() => handleChipClick('Skills')}>
-                  🤝 Skill Trades
+                  <Icon name="swap" size={13} /> Skills
                 </button>
-                <button type="button" className="subbar-chip" onClick={() => handleChipClick('Dorm')}>
-                  🍕 Dorm Favors
+                <button type="button" className="subbar-chip" onClick={() => handleChipClick('Projects')}>
+                  <Icon name="sparkles" size={13} /> Projects
+                </button>
+                <button type="button" className="subbar-chip" onClick={() => handleChipClick('Opportunities')}>
+                  <Icon name="shield" size={13} /> Opportunities
                 </button>
               </div>
             </div>
@@ -108,30 +83,25 @@ export function Hero() {
 
           {/* Right Featured Card */}
           <div className="hero-widget-wrapper animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-            <GlowCard glowColor="blue" className="widget-card">
+            <GlowCard glowColor="purple" className="widget-card">
               <div className="widget-top">
                 <span className="badge badge--giveaway">CAMPUS VERIFIED</span>
-                <span className="widget-time">Block A • 4 mins ago</span>
+                <span className="widget-time">Block A Lobby</span>
               </div>
 
-              <h3 className="widget-title">TI-84 Plus CE Graphing Calculator</h3>
+              <h3 className="widget-title">Organic Chemistry Textbook (9th ed)</h3>
               <p className="widget-desc">
-                Includes rechargeable battery & USB cable. Perfect for Engineering Mathematics & Statistics labs.
+                Finished course with an A grade. Includes handwritten reaction cheat sheets for Chem 201.
               </p>
-
-              <div className="widget-tags">
-                <span className="tag-pill">Electronics</span>
-                <span className="tag-pill">Block A Hostel</span>
-              </div>
 
               <div className="widget-user">
                 <span className="widget-avatar">👩‍💻</span>
                 <div className="widget-meta">
-                  <div className="widget-username">Ananya Patel</div>
-                  <div className="widget-userstats">SRMIST • CSE Dept</div>
+                  <div className="widget-username">Sarah Chen • Senior</div>
+                  <div className="widget-userstats">IIT Bombay • CSE Dept</div>
                 </div>
                 <div className="widget-action-box">
-                  <span className="widget-price">₹350</span>
+                  <span className="widget-price">FREE</span>
                 </div>
               </div>
             </GlowCard>

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import GlowCard from './GlowCard.jsx'
 import Icon from './Icon.jsx'
 import { sounds } from '../utils/audio.js'

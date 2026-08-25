@@ -1,4 +1,4 @@
-import { useNavigate } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { notifications as defaultNotifications } from '../data/mockData.js'
 import { useFocusTrap } from '../hooks/useFocusTrap.js'
 import './NotificationDrawer.css'

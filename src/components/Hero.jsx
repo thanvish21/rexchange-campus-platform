@@ -1,17 +1,32 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import GlowCard from './GlowCard.jsx'
 import Icon from './Icon.jsx'
 import { sounds } from '../utils/audio.js'
 import './Hero.css'
 
 export function Hero() {
-  const handleChipClick = () => {
+  const [heroSearch, setHeroSearch] = useState('')
+  const navigate = useNavigate()
+
+  const handleHeroSearchSubmit = (e) => {
+    e.preventDefault()
+    sounds.playSnap()
+    if (heroSearch.trim()) {
+      navigate(`/browse?search=${encodeURIComponent(heroSearch.trim())}`)
+    } else {
+      navigate('/browse')
+    }
+  }
+
+  const handleChipClick = (category) => {
     sounds.playPop()
+    navigate(`/browse?cat=${encodeURIComponent(category)}`)
   }
 
   return (
     <section className="hero" aria-labelledby="hero-title">
-      {/* Dynamic Ambient Background & Grid */}
+      {/* Dynamic Ambient Background Mesh & Top Horizon Beam */}
       <div className="hero-mesh" aria-hidden="true">
         <div className="hero-grid-pattern"></div>
         <div className="hero-top-beam"></div>
@@ -22,32 +37,49 @@ export function Hero() {
 
       <div className="container">
         <div className="hero-grid">
-          {/* Left Hero Content */}
+          {/* Left Hero Main Content */}
           <div className="hero-content">
-            {/* Dynamic Eyebrow Badge with Radar Beacon & Shimmer */}
+            {/* Live Eyebrow Badge with Radar Beacon */}
             <div className="hero-eyebrow animate-fade-in-up">
               <div className="eyebrow-badge">
                 <span className="live-beacon">
                   <span className="beacon-ping"></span>
                   <span className="beacon-core"></span>
                 </span>
-                <span className="eyebrow-text">THE CAMPUS EXCHANGE NETWORK</span>
-                <span className="eyebrow-highlight">LIVE • 14+ CAMPUSES</span>
+                <span className="eyebrow-text">SRM & CAMPUS PEER NETWORK</span>
+                <span className="eyebrow-highlight">LIVE • 1,200+ ACTIVE LISTINGS</span>
               </div>
             </div>
 
-            {/* High Contrast Typography Headline */}
+            {/* High-Impact High Contrast Headline */}
             <h1 id="hero-title" className="hero-headline">
-              <span className="headline-solid">Everything your campus already has.</span>
-              <span className="headline-gradient">Now, you can actually find it.</span>
+              <span className="headline-solid">Everything your campus already owns.</span>
+              <span className="headline-gradient">Now 1-click away from your dorm.</span>
             </h1>
 
-            {/* Polished Subtitle with Emphasized Anchor Words */}
+            {/* Subtitle */}
             <p className="hero-subtitle">
-              Exchange <span className="text-highlight">resources</span>, discover <span className="text-highlight">dorm opportunities</span>, find vetted <span className="text-highlight">teammates</span>, and connect with students ready to collaborate in seconds.
+              Buy/sell textbooks, borrow lab gear, trade dorm favors for cold coffee, and match with hackathon teammates using AI skill compatibility.
             </p>
 
-            {/* Enhanced CTA Group with Kinetic Physics */}
+            {/* Quick Hero Search Bar */}
+            <form className="hero-search-form animate-fade-in-up" onSubmit={handleHeroSearchSubmit}>
+              <div className="hero-search-wrap">
+                <span className="hero-search-icon"><Icon name="search" size={18} /></span>
+                <input
+                  type="text"
+                  className="hero-search-input"
+                  placeholder="Search textbooks, calculators, notes, or skills (e.g. TI-84, DSA)..."
+                  value={heroSearch}
+                  onChange={(e) => setHeroSearch(e.target.value)}
+                />
+                <button type="submit" className="btn btn--primary hero-search-btn">
+                  Search Campus →
+                </button>
+              </div>
+            </form>
+
+            {/* Primary CTA Buttons */}
             <div className="hero-cta-group animate-fade-in-up">
               <Link
                 to="/browse"
@@ -55,7 +87,7 @@ export function Hero() {
                 onClick={() => sounds.playPop()}
               >
                 <span className="btn-content">
-                  Explore RExchange
+                  📦 Browse Campus Gear
                   <Icon name="arrowUpRight" size={18} className="cta-icon" />
                 </span>
                 <div className="btn-shine"></div>
@@ -67,74 +99,71 @@ export function Hero() {
                 onClick={() => sounds.playPop()}
               >
                 <Icon name="sparkles" size={16} className="secondary-icon" />
-                <span>Find a Teammate</span>
+                <span>⚡ AI Teammate Matcher</span>
               </Link>
             </div>
 
-            {/* Interactive Campus Category Subbar */}
+            {/* Interactive Quick Category Pills */}
             <div className="hero-subbar animate-fade-in-up">
               <div className="subbar-header">
-                <span className="subbar-label">Available on Campus:</span>
-                <span className="subbar-live-tag">⚡ Active Now</span>
+                <span className="subbar-label">Instant Campus Categories:</span>
+                <span className="subbar-live-tag">⚡ 0% Platform Fees</span>
               </div>
               <div className="subbar-chips">
-                <button type="button" className="subbar-chip" onClick={handleChipClick}>
-                  <Icon name="book" size={13} className="chip-icon" /> Textbooks
+                <button type="button" className="subbar-chip" onClick={() => handleChipClick('Textbooks')}>
+                  <Icon name="book" size={13} className="chip-icon" /> 📚 Textbooks (₹150 avg)
                 </button>
-                <button type="button" className="subbar-chip" onClick={handleChipClick}>
-                  <Icon name="code" size={13} className="chip-icon" /> Notes & Cheatsheets
+                <button type="button" className="subbar-chip" onClick={() => handleChipClick('Electronics')}>
+                  <Icon name="cpu" size={13} className="chip-icon" /> 💻 Calculators & Kits
                 </button>
-                <button type="button" className="subbar-chip" onClick={handleChipClick}>
-                  <Icon name="cpu" size={13} className="chip-icon" /> Electronics & Lab Kits
+                <button type="button" className="subbar-chip" onClick={() => handleChipClick('Notes')}>
+                  <Icon name="code" size={13} className="chip-icon" /> 📝 Free Study Notes
                 </button>
-                <button type="button" className="subbar-chip" onClick={handleChipClick}>
-                  <Icon name="swap" size={13} className="chip-icon" /> Skill Swaps
+                <button type="button" className="subbar-chip" onClick={() => handleChipClick('Skills')}>
+                  <Icon name="swap" size={13} className="chip-icon" /> 🤝 Peer Skill Trades
                 </button>
-                <button type="button" className="subbar-chip" onClick={handleChipClick}>
-                  <Icon name="sparkles" size={13} className="chip-icon" /> Project Bounties
-                </button>
-                <button type="button" className="subbar-chip" onClick={handleChipClick}>
-                  <Icon name="shield" size={13} className="chip-icon" /> Dorm Favors
+                <button type="button" className="subbar-chip" onClick={() => handleChipClick('Dorm')}>
+                  <Icon name="shield" size={13} className="chip-icon" /> 🍕 Dorm Favors
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Right Hero Widget with Layered Glassmorphism & Floating Status Pills */}
+          {/* Right Hero Preview Section */}
           <div className="hero-widget-wrapper animate-fade-in-up" style={{ animationDelay: '150ms' }}>
-            {/* Top Floating Activity Pill */}
+            {/* Top Activity Pill */}
             <div className="floating-pill floating-pill-top">
               <span className="pill-dot"></span>
-              <span className="pill-text">⚡ Handover in 10 mins • Block A Lobby</span>
+              <span className="pill-text">⚡ Handover in 10 mins • Block A Lobby Desk</span>
             </div>
 
-            {/* Bottom Floating Match Score Pill */}
+            {/* Bottom Synergy Match Pill */}
             <div className="floating-pill floating-pill-bottom">
               <span className="pill-emoji">🔥</span>
-              <span className="pill-text"><strong>98% Match</strong> for Chem 201 Students</span>
+              <span className="pill-text"><strong>98% Team Match</strong> for React + PyTorch</span>
             </div>
 
-            {/* Center Main GlowCard */}
+            {/* Featured Marketplace GlowCard */}
             <GlowCard glowColor="purple" className="widget-card">
               <div className="widget-top">
                 <div className="widget-badge-group">
                   <span className="badge badge--giveaway">
-                    <Icon name="shield" size={12} /> CAMPUS VERIFIED
+                    <Icon name="shield" size={12} /> SRM VERIFIED
                   </span>
                   <span className="widget-status-tag">⚡ FREE GIVEAWAY</span>
                 </div>
                 <span className="widget-time">Block A • 4 mins ago</span>
               </div>
 
-              <h3 className="widget-title">Organic Chemistry Textbook (9th ed)</h3>
+              <h3 className="widget-title">TI-84 Plus CE Graphing Calculator</h3>
               <p className="widget-desc">
-                Finished course with an A grade. Includes handwritten reaction mechanism cheat sheets and mid-sem flashcards for Chem 201.
+                Clean condition with rechargeable battery & USB cable. Perfect for Eng Math Vol 3 & Stats lab exams.
               </p>
 
               <div className="widget-tags">
-                <span className="tag-pill">Chemistry</span>
-                <span className="tag-pill">Pre-Med / Eng</span>
-                <span className="tag-pill">Cheat Sheets Included</span>
+                <span className="tag-pill">Electronics</span>
+                <span className="tag-pill">Hostel Block A</span>
+                <span className="tag-pill">Verified Student</span>
               </div>
 
               <div className="widget-user">
@@ -144,12 +173,12 @@ export function Hero() {
                 </div>
                 <div className="widget-meta">
                   <div className="widget-username">
-                    Sarah Chen <span className="user-role-badge">Senior</span>
+                    Ananya Patel <span className="user-role-badge">Junior 3rd Yr</span>
                   </div>
-                  <div className="widget-userstats">IIT Bombay • CSE Dept • ⭐ 4.9 (28 swaps)</div>
+                  <div className="widget-userstats">SRMIST • CSE Dept • ⭐ 4.9 (24 swaps)</div>
                 </div>
                 <div className="widget-action-box">
-                  <span className="widget-price">FREE</span>
+                  <span className="widget-price">₹350</span>
                 </div>
               </div>
             </GlowCard>
@@ -159,4 +188,5 @@ export function Hero() {
     </section>
   )
 }
+
 export default Hero

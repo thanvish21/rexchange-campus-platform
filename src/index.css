@@ -1,48 +1,48 @@
-/* Linear / Vercel 2026 SaaS Design Token System */
+/* Linear / Vercel 2026 SaaS Design Token System — Emerald Mint & Cyber Green Theme */
 :root {
   /* Core Colors - Zinc Dark Palette */
-  --bg-root: #09090b;
-  --bg-primary: #09090b;
-  --bg-secondary: #111115;
-  --bg-surface: #18181b;
-  --bg-card: #16161f;
-  --bg-subtle: #27272a;
-  --bg-overlay: rgba(9, 9, 11, 0.85);
+  --bg-root: #060907;
+  --bg-primary: #060907;
+  --bg-secondary: #0c120e;
+  --bg-surface: #121915;
+  --bg-card: #141f1a;
+  --bg-subtle: #1c2922;
+  --bg-overlay: rgba(6, 9, 7, 0.88);
 
   /* Borders */
-  --border-subtle: #27272a;
-  --border-primary: #2a2a3a;
-  --border-secondary: #3a3a52;
-  --border-muted: #3f3f46;
-  --border-active: #52525b;
-  --border-accent: rgba(59, 130, 246, 0.4);
-  --border-glow: rgba(99, 102, 241, 0.4);
+  --border-subtle: #1c2922;
+  --border-primary: #22362c;
+  --border-secondary: #2d473a;
+  --border-muted: #385748;
+  --border-active: #476f5c;
+  --border-accent: rgba(16, 185, 129, 0.45);
+  --border-glow: rgba(52, 211, 153, 0.45);
 
-  /* Accents & Gradients */
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --accent-subtle: rgba(59, 130, 246, 0.12);
-  --accent-text: #93c5fd;
+  /* Accents & Gradients — Emerald Mint & Cyber Green */
+  --accent: #10b981;
+  --accent-hover: #059669;
+  --accent-subtle: rgba(16, 185, 129, 0.14);
+  --accent-text: #6ee7b7;
 
-  --accent-indigo: #6366f1;
-  --accent-purple: #a855f7;
-  --accent-pink: #ec4899;
-  --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-  --accent-gradient-hover: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+  --accent-indigo: #10b981;
+  --accent-purple: #34d399;
+  --accent-pink: #059669;
+  --accent-gradient: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  --accent-gradient-hover: linear-gradient(135deg, #059669 0%, #10b981 100%);
 
   /* Semantic Feedback */
-  --success: #22c55e;
-  --success-subtle: rgba(34, 197, 94, 0.12);
-  --warning: #eab308;
-  --warning-subtle: rgba(234, 179, 8, 0.12);
+  --success: #10b981;
+  --success-subtle: rgba(16, 185, 129, 0.14);
+  --warning: #f59e0b;
+  --warning-subtle: rgba(245, 158, 11, 0.14);
   --error: #ef4444;
-  --error-subtle: rgba(239, 68, 68, 0.12);
+  --error-subtle: rgba(239, 68, 68, 0.14);
 
-  --text-primary: #f4f4f5;
-  --text-secondary: #a1a1aa;
-  --text-muted: #94949e; /* Upgraded for WCAG AA compliance (5.8:1 contrast on #18181b) */
-  --text-inverse: #09090b;
-  --text-accent-indigo: #818cf8;
+  --text-primary: #f0fdf4;
+  --text-secondary: #a7f3d0;
+  --text-muted: #6ee7b7;
+  --text-inverse: #060907;
+  --text-accent-indigo: #34d399;
 
   /* Typography System — Premium 2026 SaaS Font Family Hierarchy */
   --font-hero: 'Syne', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -61,9 +61,9 @@
   --tracking-kicker: 0.16em;
 
   /* Multi-Layer Specular Text Glows */
-  --text-glow-hero: 0 0 1px rgba(255, 255, 255, 0.8), 0 0 20px rgba(165, 180, 252, 0.4), 0 0 48px rgba(99, 102, 241, 0.25);
-  --text-glow-indigo: 0 0 1px rgba(199, 210, 254, 0.8), 0 0 16px rgba(99, 102, 241, 0.45);
-  --text-glow-green: 0 0 1px rgba(187, 247, 208, 0.8), 0 0 14px rgba(34, 197, 94, 0.45);
+  --text-glow-hero: 0 0 1px rgba(240, 253, 244, 0.8), 0 0 20px rgba(52, 211, 153, 0.45), 0 0 48px rgba(16, 185, 129, 0.3);
+  --text-glow-indigo: 0 0 1px rgba(167, 243, 208, 0.8), 0 0 16px rgba(16, 185, 129, 0.45);
+  --text-glow-green: 0 0 1px rgba(187, 247, 208, 0.8), 0 0 14px rgba(52, 211, 153, 0.45);
 
   /* Spacing Scale (8px Grid) */
   --space-1: 4px;
@@ -87,20 +87,20 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.7);
-  --shadow-glow: 0 0 32px rgba(99, 102, 241, 0.25);
+  --shadow-glow: 0 0 32px rgba(16, 185, 129, 0.3);
   --shadow-focus: 0 0 0 2px var(--bg-root), 0 0 0 4px var(--accent);
 
   /* 7-Tier Zinc Dark Surface Ladder */
-  --surface-0: #09090b;
-  --surface-1: #0d0d11;
-  --surface-2: #121216;
-  --surface-3: #18181b;
-  --surface-4: #202025;
-  --surface-5: #27272a;
-  --surface-6: #323238;
+  --surface-0: #060907;
+  --surface-1: #090e0b;
+  --surface-2: #0e1611;
+  --surface-3: #121915;
+  --surface-4: #18231d;
+  --surface-5: #1e2c24;
+  --surface-6: #26382e;
 
   /* Specular Top-Bevel Highlights & Translucent Borders */
-  --specular-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.09);
+  --specular-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
   --border-alpha-subtle: rgba(255, 255, 255, 0.07);
   --border-alpha-primary: rgba(255, 255, 255, 0.12);
   --border-alpha-active: rgba(255, 255, 255, 0.22);
@@ -245,8 +245,8 @@ select:focus-visible {
   letter-spacing: var(--tracking-kicker);
   text-transform: uppercase;
   color: var(--accent-text);
-  background: rgba(99, 102, 241, 0.12);
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.35);
   padding: 4px 12px;
   border-radius: var(--radius-full);
 }

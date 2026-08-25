@@ -49,7 +49,7 @@
   border: 1px solid var(--border-subtle);
   padding: 2px 6px;
   border-radius: var(--radius-sm);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .cmd-body {
@@ -63,13 +63,31 @@
 }
 
 .cmd-section-title {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   padding: var(--space-2) var(--space-3);
+}
+
+.cmd-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-indigo);
+  display: inline-block;
+}
+
+.cmd-dot--green {
+  background: var(--success);
+}
+
+.cmd-dot--blue {
+  background: var(--accent);
 }
 
 .cmd-row {
@@ -79,11 +97,37 @@
   padding: var(--space-3);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  background: transparent;
+  border: 1px solid transparent;
+  width: 100%;
+  text-align: left;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
-.cmd-row:hover {
+.cmd-row:hover,
+.cmd-row--active,
+.cmd-row.active {
   background: var(--bg-subtle);
+  border-color: var(--border-accent);
+}
+
+.cmd-row--active .cmd-row-title,
+.cmd-row.active .cmd-row-title {
+  color: var(--accent-text);
+}
+
+.cmd-row--active .cmd-row-arrow,
+.cmd-row.active .cmd-row-arrow {
+  color: var(--accent);
+  transform: translateX(2px);
+}
+
+mark.cmd-highlight {
+  background: rgba(59, 130, 246, 0.22);
+  color: var(--accent-text);
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 1px 3px;
 }
 
 .cmd-row-icon {
@@ -108,11 +152,36 @@
 .cmd-row-arrow {
   color: var(--text-muted);
   font-size: 14px;
+  transition: transform var(--transition-fast);
 }
 
 .cmd-empty {
-  padding: var(--space-4);
+  padding: var(--space-6);
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-align: center;
+}
+
+.cmd-empty-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.cmd-footer {
+  display: flex;
+  gap: 16px;
+  padding: 10px 20px;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-subtle);
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
+.cmd-hint kbd {
+  font-family: var(--font-mono);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-right: 3px;
 }

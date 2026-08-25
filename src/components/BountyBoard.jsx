@@ -4,10 +4,10 @@ import GlowCard from './GlowCard.jsx'
 import './BountyBoard.css'
 
 const BOUNTIES = [
-  { id: 1, title: 'Need electric kettle in Block B for 1 hour', bounty: '🍕 Slice of Dominoes Pizza', postedBy: 'Rahul (Block B)', urgent: true },
-  { id: 2, title: 'Borrowing graphing calculator for 9 AM exam', bounty: '☕ Free Cold Coffee', postedBy: 'Ananya (Block A)', urgent: true },
-  { id: 3, title: 'Need someone to test my React lab app', bounty: '🍪 Box of Cookies', postedBy: 'Vikram (Block C)', urgent: false },
-  { id: 4, title: 'Need past 3 years math question paper notes', bounty: '₹100 or Samosa Treat', postedBy: 'Sneha (GH-1)', urgent: false },
+  { id: 1, title: 'Need electric kettle in Block B for 1 hour', bounty: '🍕 Slice of Dominoes Pizza', rewardType: 'pizza', postedBy: 'Rahul (Block B)', urgent: true, karma: 15 },
+  { id: 2, title: 'Borrowing graphing calculator for 9 AM exam', bounty: '☕ Free Cold Coffee', rewardType: 'coffee', postedBy: 'Ananya (Block A)', urgent: true, karma: 20 },
+  { id: 3, title: 'Need someone to test my React lab app', bounty: '🍪 Box of Cookies', rewardType: 'snacks', postedBy: 'Vikram (Block C)', urgent: false, karma: 10 },
+  { id: 4, title: 'Need past 3 years math question paper notes', bounty: '💸 ₹100 or Samosa Treat', rewardType: 'cash', postedBy: 'Sneha (GH-1)', urgent: false, karma: 25 },
 ]
 
 export function BountyBoard() {
@@ -15,17 +15,20 @@ export function BountyBoard() {
   const [title, setTitle] = useState('')
   const [bounty, setBounty] = useState('')
   const [posted, setPosted] = useState(false)
+  const [claimedId, setClaimedId] = useState(null)
 
   const handleAdd = (e) => {
     e.preventDefault()
-    if (!title || !bounty) return
-    sounds.playSuccess()
+    if (!title.trim() || !bounty.trim()) return
+    sounds.playCelebration()
     const newB = {
       id: Date.now(),
-      title,
-      bounty,
+      title: title.trim(),
+      bounty: bounty.trim(),
+      rewardType: bounty.toLowerCase().includes('coffee') ? 'coffee' : bounty.toLowerCase().includes('pizza') ? 'pizza' : 'favor',
       postedBy: 'You (Just Now)',
       urgent: true,
+      karma: 15,
     }
     setBounties([newB, ...bounties])
     setTitle('')
@@ -34,10 +37,8 @@ export function BountyBoard() {
     setTimeout(() => setPosted(false), 3000)
   }
 
-  const [claimedId, setClaimedId] = useState(null)
-
   const handleClaim = (bountyId) => {
-    sounds.playPop()
+    sounds.playCelebration()
     setClaimedId(bountyId)
     setTimeout(() => setClaimedId(null), 4000)
   }
@@ -86,7 +87,7 @@ export function BountyBoard() {
 
               {posted && (
                 <div className="save-success" style={{ marginTop: '12px' }}>
-                  ✓ Bounty live on campus feed!
+                  ✓ Bounty live on campus feed! (+15 Karma Points)
                 </div>
               )}
             </form>
@@ -98,8 +99,9 @@ export function BountyBoard() {
               <GlowCard key={b.id} glowColor={b.urgent ? 'purple' : 'blue'} className="bounty-item">
                 <div className="bounty-head">
                   <span className={`badge ${b.urgent ? 'badge--sell' : 'badge--share'}`}>
-                    {b.urgent ? '🔥 URGENT FAVOR' : '✨ CAMPUS FAVOR'}
+                    {b.urgent ? '🔴 LIVE - NEEDED ASAP' : '✨ CAMPUS FAVOR'}
                   </span>
+                  <span className="bounty-karma-badge">+ {b.karma} Karma</span>
                   <span className="bounty-user">{b.postedBy}</span>
                 </div>
                 <h4 className="bounty-item-title">{b.title}</h4>
@@ -107,11 +109,12 @@ export function BountyBoard() {
                   <span>Offering Reward:</span> <strong>{b.bounty}</strong>
                 </div>
                 {claimedId === b.id ? (
-                  <div className="save-success" role="status" style={{ textAlign: 'center', padding: '10px' }}>
-                    ✓ Bounty claimed! Connect via chat to coordinate.
+                  <div className="save-success bounty-claim-success animate-fade-in-up" role="status">
+                    🎉 Claimed! +{b.karma} Karma Points Earned!
                   </div>
                 ) : (
                   <button
+                    type="button"
                     className="btn btn--primary btn--sm bounty-claim-btn"
                     onClick={() => handleClaim(b.id)}
                   >
@@ -125,5 +128,4 @@ export function BountyBoard() {
       </div>
     </section>
   )
-
 }

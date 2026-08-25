@@ -9,8 +9,19 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [cmdOpen, setCmdOpen] = useState(false)
   const [notifOpen, setNotifOpen] = useState(false)
+  const [notificationsList, setNotificationsList] = useState(initialNotifications)
 
-  const unreadCount = initialNotifications.filter((n) => !n.read).length
+  const unreadCount = notificationsList.filter((n) => !n.read).length
+
+  const handleMarkAllRead = () => {
+    setNotificationsList((prev) => prev.map((n) => ({ ...n, read: true })))
+  }
+
+  const handleMarkAsRead = (id) => {
+    setNotificationsList((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    )
+  }
 
   const navLinks = [
     { path: '/browse', label: 'Discover' },
@@ -59,6 +70,7 @@ export function Navbar() {
 
           <div className="navbar-right">
             <button
+              type="button"
               className="navbar-search-btn"
               onClick={() => setCmdOpen(true)}
               title="Global Search (⌘K)"
@@ -70,6 +82,7 @@ export function Navbar() {
             </button>
 
             <button
+              type="button"
               className="navbar-notif-btn"
               onClick={() => setNotifOpen(true)}
               title="Notifications"
@@ -88,6 +101,7 @@ export function Navbar() {
             </NavLink>
 
             <button
+              type="button"
               className="mobile-menu-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle navigation menu"
@@ -114,7 +128,13 @@ export function Navbar() {
       </nav>
 
       <CommandPalette isOpen={cmdOpen} onClose={() => setCmdOpen(false)} />
-      <NotificationDrawer isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
+      <NotificationDrawer
+        isOpen={notifOpen}
+        onClose={() => setNotifOpen(false)}
+        notifications={notificationsList}
+        onMarkAllRead={handleMarkAllRead}
+        onMarkAsRead={handleMarkAsRead}
+      />
     </>
   )
 }

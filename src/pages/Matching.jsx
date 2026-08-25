@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { users } from '../data/mockData.js'
 import { rankCandidates } from '../lib/matchingAlgorithm.js'
+import { sounds } from '../utils/audio.js'
 import GlowCard from '../components/GlowCard.jsx'
 import Icon from '../components/Icon.jsx'
 import './Matching.css'
@@ -19,6 +20,86 @@ const EXP_OPTIONS = ['Beginner (Learning)', 'Intermediate (Built Projects)', 'Ad
 const TIME_OPTIONS = ['5–10 hrs/week', '10–15 hrs/week', '15+ hrs/week (Full Hackathon Mode)']
 const GOAL_OPTIONS = ['Win a Hackathon', 'Build a Campus Startup', 'Course / Lab Project', 'Skill Trade & Learning']
 
+// Pure SVG Radar Chart Component
+function SkillRadarChart({ candidateSkills = [], mySkills = [] }) {
+  const categories = [
+    { label: 'Frontend', score: mySkills.includes('React & Next.js') ? 85 : 40 },
+    { label: 'Backend', score: candidateSkills.some(s => s.name?.includes('Node') || s.name?.includes('Python')) ? 90 : 50 },
+    { label: 'AI/ML', score: candidateSkills.some(s => s.name?.includes('PyTorch')) ? 95 : 30 },
+    { label: 'UI/UX', score: candidateSkills.some(s => s.name?.includes('Figma')) ? 92 : 35 },
+    { label: 'Systems', score: mySkills.includes('C++') ? 80 : 45 },
+    { label: 'Hardware', score: candidateSkills.some(s => s.name?.includes('Hardware')) ? 88 : 25 },
+  ]
+
+  const size = 200
+  const center = size / 2
+  const radius = 70
+
+  const getCoordinates = (index, value) => {
+    const angle = (Math.PI * 2 / categories.length) * index - Math.PI / 2
+    const r = (value / 100) * radius
+    return {
+      x: center + r * Math.cos(angle),
+      y: center + r * Math.sin(angle),
+    }
+  }
+
+  const points = categories.map((cat, i) => {
+    const { x, y } = getCoordinates(i, cat.score)
+    return `${x.toFixed(1)},${y.toFixed(1)}`
+  }).join(' ')
+
+  return (
+    <div className="radar-chart-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        {/* Concentric Circles */}
+        {[0.3, 0.6, 1].map((scale, idx) => (
+          <polygon
+            key={idx}
+            points={categories.map((_, i) => {
+              const { x, y } = getCoordinates(i, scale * 100)
+              return `${x.toFixed(1)},${y.toFixed(1)}`
+            }).join(' ')}
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.08)"
+            strokeWidth="1"
+          />
+        ))}
+
+        {/* Axes */}
+        {categories.map((cat, i) => {
+          const { x, y } = getCoordinates(i, 100)
+          return (
+            <line key={i} x1={center} y1={center} x2={x} y2={y} stroke="rgba(255, 255, 255, 0.1)" strokeWidth="1" />
+          )
+        })}
+
+        {/* Polygon Area */}
+        <polygon points={points} fill="rgba(99, 102, 241, 0.25)" stroke="var(--accent-indigo)" strokeWidth="2" />
+
+        {/* Labels */}
+        {categories.map((cat, i) => {
+          const { x, y } = getCoordinates(i, 115)
+          return (
+            <text
+              key={i}
+              x={x}
+              y={y}
+              fill="#a5b4fc"
+              fontSize="9"
+              fontWeight="600"
+              textAnchor="middle"
+              dominantBaseline="central"
+            >
+              {cat.label}
+            </text>
+          )
+        })}
+      </svg>
+    </div>
+  )
+}
+
 export default function Matching() {
   const [currentStep, setCurrentStep] = useState(0)
   const [selectedSkills, setSelectedSkills] = useState(['React & Next.js', 'Python'])
@@ -32,19 +113,22 @@ export default function Matching() {
   const [invitedId, setInvitedId] = useState(null)
 
   const toggleSkill = (s) => {
-    setSelectedSkills(
-      selectedSkills.includes(s) ? selectedSkills.filter((x) => x !== s) : [...selectedSkills, s]
+    sounds.playPop()
+    setSelectedSkills((prev) =>
+      prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]
     )
   }
 
   const toggleDomain = (d) => {
-    setSelectedDomains(
-      selectedDomains.includes(d) ? selectedDomains.filter((x) => x !== d) : [...selectedDomains, d]
+    sounds.playPop()
+    setSelectedDomains((prev) =>
+      prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d]
     )
   }
 
   const handleRunMatch = () => {
     setAnalyzing(true)
+    sounds.playSnap()
     setTimeout(() => {
       const ranked = rankCandidates(users, {
         selectedSkills,
@@ -55,10 +139,12 @@ export default function Matching() {
       setRankedUsers(ranked)
       setAnalyzing(false)
       setMatched(true)
-    }, 1000)
+      sounds.playCelebration()
+    }, 900)
   }
 
   const handleInvite = (id) => {
+    sounds.playCelebration()
     setInvitedId(id)
     setTimeout(() => setInvitedId(null), 4000)
   }
@@ -131,7 +217,7 @@ export default function Matching() {
                       key={e}
                       type="button"
                       className={`wizard-option ${selectedExp === e ? 'active' : ''}`}
-                      onClick={() => setSelectedExp(e)}
+                      onClick={() => { sounds.playPop(); setSelectedExp(e) }}
                     >
                       {e}
                     </button>
@@ -146,7 +232,7 @@ export default function Matching() {
                       key={t}
                       type="button"
                       className={`wizard-option ${selectedTime === t ? 'active' : ''}`}
-                      onClick={() => setSelectedTime(t)}
+                      onClick={() => { sounds.playPop(); setSelectedTime(t) }}
                     >
                       {t}
                     </button>
@@ -161,7 +247,7 @@ export default function Matching() {
                       key={g}
                       type="button"
                       className={`wizard-option ${selectedGoal === g ? 'active' : ''}`}
-                      onClick={() => setSelectedGoal(g)}
+                      onClick={() => { sounds.playPop(); setSelectedGoal(g) }}
                     >
                       {g}
                     </button>
@@ -183,7 +269,7 @@ export default function Matching() {
                 </button>
               ) : (
                 <button className="btn btn--primary glow" onClick={handleRunMatch} disabled={analyzing}>
-                  {analyzing ? '⚙️ Computing Team Matrices...' : '⚡ Generate Teammate Matches'}
+                  {analyzing ? '⚙️ Computing Skill Radar Matrices...' : '⚡ Generate Teammate Matches'}
                 </button>
               )}
             </div>
@@ -200,39 +286,49 @@ export default function Matching() {
               </button>
             </div>
 
-            {/* Team Composition Matrix Visualization */}
-            <div className="surface team-matrix-card" style={{ padding: '24px', marginBottom: '24px' }}>
-              <h3 className="text-heading-md" style={{ marginBottom: '8px' }}>🧩 Visual Team Composition Matrix</h3>
-              <p className="text-muted" style={{ marginBottom: '16px' }}>Analyzing skill coverage for your current project setup:</p>
+            {/* Team Composition Matrix & SVG Radar Visualization */}
+            <div className="surface team-matrix-card" style={{ padding: '24px', marginBottom: '24px', display: 'grid', gridTemplateColumns: '1fr 220px', gap: '24px', alignItems: 'center' }}>
+              <div>
+                <h3 className="text-heading-md" style={{ marginBottom: '8px' }}>🧩 Visual Team Composition Matrix</h3>
+                <p className="text-muted" style={{ marginBottom: '16px' }}>Analyzing skill coverage for your current project setup:</p>
 
-              <div className="matrix-grid">
-                <div className="matrix-cell ok">
-                  <span className="matrix-role">Frontend / Web</span>
-                  <span className="matrix-status">✓ You ({selectedSkills[0] || 'React'})</span>
+                <div className="matrix-grid">
+                  <div className="matrix-cell ok">
+                    <span className="matrix-role">Frontend / Web</span>
+                    <span className="matrix-status">✓ Covered by You</span>
+                  </div>
+                  <div className="matrix-cell ok">
+                    <span className="matrix-role">Machine Learning</span>
+                    <span className="matrix-status">⚡ Gap Filled by Sarah</span>
+                  </div>
+                  <div className="matrix-cell recommended">
+                    <span className="matrix-role">UI/UX Design</span>
+                    <span className="matrix-status">✨ Marcus (Figma)</span>
+                  </div>
+                  <div className="matrix-cell ok">
+                    <span className="matrix-role">Backend & Systems</span>
+                    <span className="matrix-status">🔄 Shared Multiplier</span>
+                  </div>
                 </div>
-                <div className="matrix-cell ok">
-                  <span className="matrix-role">Machine Learning</span>
-                  <span className="matrix-status">✓ Sarah Chen (PyTorch)</span>
-                </div>
-                <div className="matrix-cell gap">
-                  <span className="matrix-role">UI/UX Design</span>
-                  <span className="matrix-status">⚠️ Missing Capability</span>
-                </div>
-                <div className="matrix-cell recommended">
-                  <span className="matrix-role">Recommended Pick</span>
-                  <span className="matrix-status">Marcus Johnson (Figma)</span>
+
+                <div className="matrix-tip" style={{ marginTop: '16px', fontSize: '13px', background: 'var(--accent-subtle)', border: '1px solid var(--border-accent)', padding: '12px 16px', borderRadius: 'var(--radius-sm)' }}>
+                  <strong>💡 Team Synergy Score: 98%</strong> — Inviting <strong>Sarah Chen (AI/ML)</strong> & <strong>Marcus Johnson (UI/UX)</strong> completes your full-stack product capability spectrum.
                 </div>
               </div>
 
-              <div className="matrix-tip" style={{ marginTop: '16px', fontSize: '13px', background: 'var(--accent-subtle)', border: '1px solid var(--border-accent)', padding: '12px 16px', borderRadius: 'var(--radius-sm)' }}>
-                <strong>💡 Team Composition Tip:</strong> Adding <strong>Marcus Johnson (UI/UX)</strong> completes your team spectrum and boosts overall compatibility to 96%.
+              {/* Pure SVG Skill Spectrum Radar Chart */}
+              <div style={{ textAlign: 'center' }}>
+                <span className="mono" style={{ fontSize: '11px', color: 'var(--accent-text)', display: 'block', marginBottom: '6px' }}>
+                  SKILL COVERAGE RADAR
+                </span>
+                <SkillRadarChart candidateSkills={rankedUsers[0]?.skills || []} mySkills={selectedSkills} />
               </div>
             </div>
 
             {/* Recommended Teammates List */}
             <div className="match-cards-grid" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {(rankedUsers.length > 0 ? rankedUsers : users).slice(0, 3).map((u) => {
-                const score = u.matchScore || 92
+                const score = u.matchScore || 94
                 return (
                   <GlowCard key={u.id} glowColor="purple" className="match-card">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
@@ -244,7 +340,7 @@ export default function Matching() {
                         </div>
                       </div>
                       <div className="badge badge--giveaway" style={{ fontSize: '14px', fontWeight: '700' }}>
-                        {score}% Compatibility
+                        {score}% Synergy
                       </div>
                     </div>
 
@@ -264,10 +360,11 @@ export default function Matching() {
 
                     {invitedId === u.id ? (
                       <div className="save-success" role="status" style={{ textAlign: 'center', padding: '10px' }}>
-                        ✓ Invitation sent to {u.name}!
+                        🎉 Invitation sent to {u.name}!
                       </div>
                     ) : (
                       <button
+                        type="button"
                         className="btn btn--primary btn--sm"
                         style={{ width: '100%' }}
                         onClick={() => handleInvite(u.id)}

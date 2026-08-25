@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { listings, projects, users, categories, userById } from '../data/mockData.js'
 import GlowCard from '../components/GlowCard.jsx'
 import Icon from '../components/Icon.jsx'
@@ -16,32 +16,40 @@ export default function Browse() {
   const [showPayment, setShowPayment] = useState(false)
 
   // Skills list derived from users mock
-  const skillListings = users.flatMap((u) =>
-    u.skills.map((s) => ({
-      id: `skill-${u.id}-${s.name}`,
-      title: `${u.name} can teach / mentor in ${s.name}`,
-      user: u,
-      skillName: s.name,
-      level: s.level,
-      category: 'skills',
-    }))
-  )
+  const skillListings = useMemo(() => (
+    users.flatMap((u) =>
+      u.skills.map((s) => ({
+        id: `skill-${u.id}-${s.name}`,
+        title: `${u.name} can teach / mentor in ${s.name}`,
+        user: u,
+        skillName: s.name,
+        level: s.level,
+        category: 'skills',
+      }))
+    )
+  ), [])
 
-  const filteredResources = listings.filter((item) => {
-    const matchCat = selectedCategory === 'all' || item.category === selectedCategory
-    const matchQ = searchQuery === '' || item.title.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchCat && matchQ
-  })
+  const filteredResources = useMemo(() => (
+    listings.filter((item) => {
+      const matchCat = selectedCategory === 'all' || item.category === selectedCategory
+      const matchQ = !searchQuery.trim() || item.title.toLowerCase().includes(searchQuery.toLowerCase().trim())
+      return matchCat && matchQ
+    })
+  ), [selectedCategory, searchQuery])
 
-  const filteredProjects = projects.filter((proj) => {
-    const matchQ = searchQuery === '' || proj.title.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchQ
-  })
+  const filteredProjects = useMemo(() => (
+    projects.filter((proj) => {
+      const matchQ = !searchQuery.trim() || proj.title.toLowerCase().includes(searchQuery.toLowerCase().trim())
+      return matchQ
+    })
+  ), [searchQuery])
 
-  const filteredSkills = skillListings.filter((sk) => {
-    const matchQ = searchQuery === '' || sk.title.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchQ
-  })
+  const filteredSkills = useMemo(() => (
+    skillListings.filter((sk) => {
+      const matchQ = !searchQuery.trim() || sk.title.toLowerCase().includes(searchQuery.toLowerCase().trim())
+      return matchQ
+    })
+  ), [skillListings, searchQuery])
 
   return (
     <div className="page browse-page">
@@ -56,8 +64,8 @@ export default function Browse() {
             Find textbooks, calculators, open project positions, or peer skill trades directly on campus
           </p>
 
-          {/* 3-Tab Architecture */}
-          <div className="browse-tabs" style={{ display: 'flex', gap: '8px', marginTop: '20px' }}>
+          {/* 3-Tab Architecture with Live Counters */}
+          <div className="browse-tabs" style={{ display: 'flex', gap: '8px', marginTop: '20px', flexWrap: 'wrap' }}>
             <button
               type="button"
               className={`btn ${activeTab === 'resources' ? 'btn--primary' : 'btn--ghost'}`}
@@ -203,7 +211,7 @@ export default function Browse() {
                     <button
                       type="button"
                       className="btn btn--primary btn--sm"
-                      onClick={() => setActiveChat(creator)}
+                      onClick={() => setActiveChat({ partner: creator, itemTitle: proj.title })}
                     >
                       Join project →
                     </button>
@@ -239,7 +247,7 @@ export default function Browse() {
                   <button
                     type="button"
                     className="btn btn--primary btn--sm"
-                    onClick={() => setActiveChat(sk.user)}
+                    onClick={() => setActiveChat({ partner: sk.user, itemTitle: sk.title })}
                   >
                     Connect →
                   </button>
@@ -254,7 +262,7 @@ export default function Browse() {
         <ItemModal
           item={activeItem}
           onClose={() => setActiveItem(null)}
-          onOpenChat={(seller) => setActiveChat(seller)}
+          onOpenChat={(seller, title) => setActiveChat({ partner: seller, itemTitle: title || activeItem.title })}
           onOpenPaywall={() => setShowPayment(true)}
         />
       )}
@@ -262,7 +270,8 @@ export default function Browse() {
       {activeChat && (
         <ChatModal
           isOpen={Boolean(activeChat)}
-          seller={activeChat}
+          seller={activeChat.partner || activeChat}
+          itemTitle={activeChat.itemTitle}
           onClose={() => setActiveChat(null)}
         />
       )}

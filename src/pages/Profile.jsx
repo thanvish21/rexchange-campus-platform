@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { currentUser, allSkills } from '../data/mockData.js'
+import { sounds } from '../utils/audio.js'
 import GlowCard from '../components/GlowCard.jsx'
 import './Profile.css'
 
@@ -11,16 +12,16 @@ function loadSavedProfile() {
     if (raw) return JSON.parse(raw)
   } catch {}
   return {
-    name: currentUser.name,
-    avatar: currentUser.avatar,
-    hostel: currentUser.hostel,
-    department: currentUser.department,
-    year: currentUser.year,
-    bio: currentUser.bio,
+    name: currentUser.name || '',
+    avatar: currentUser.avatar || '👨‍💻',
+    hostel: currentUser.hostel || '',
+    department: currentUser.department || '',
+    year: currentUser.year || 'Junior (3rd Year)',
+    bio: currentUser.bio || '',
     github: currentUser.github || '',
     linkedin: currentUser.linkedin || '',
-    skills: currentUser.skills || [],
-    verified: currentUser.verified,
+    skills: currentUser.skills || [{ name: 'React & Next.js', level: 'intermediate' }],
+    verified: true,
   }
 }
 
@@ -34,14 +35,18 @@ export default function Profile() {
 
   const handleSave = (e) => {
     e.preventDefault()
+    sounds.playCelebration()
     try {
       localStorage.setItem(PROFILE_KEY, JSON.stringify(profile))
       setSaved(true)
-      setTimeout(() => setSaved(false), 3000)
-    } catch {}
+      setTimeout(() => setSaved(false), 3500)
+    } catch (err) {
+      console.error('Failed to save profile:', err)
+    }
   }
 
   const toggleSkill = (skillName) => {
+    sounds.playPop()
     const exists = profile.skills.some((s) => s.name === skillName)
     let updated
     if (exists) {
@@ -56,17 +61,20 @@ export default function Profile() {
     <div className="page profile-page">
       <div className="container">
         <header className="page-header animate-fade-in-up">
+          <div className="eyebrow-badge" style={{ display: 'inline-block', marginBottom: '8px' }}>
+            VERIFIED STUDENT PASSPORT
+          </div>
           <h1 className="page-title">Student Trade Passport & Profile</h1>
-          <p className="page-subtitle">Your verified campus identity, skill set, and collaboration fit</p>
+          <p className="page-subtitle">Your verified campus identity, skill set, and collaboration fit score</p>
         </header>
 
         <div className="profile-grid">
-          {/* Form */}
+          {/* Form Card */}
           <div className="surface profile-form-card animate-fade-in-up" style={{ padding: '28px' }}>
             <h3 className="text-heading-md" style={{ marginBottom: '20px' }}>Edit Student Identity</h3>
             <form onSubmit={handleSave}>
               <div className="form-field">
-                <label className="form-label">Full Name</label>
+                <label className="form-label">Full Name *</label>
                 <input
                   type="text"
                   className="form-input"
@@ -78,7 +86,7 @@ export default function Profile() {
 
               <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div className="form-field">
-                  <label className="form-label">Department</label>
+                  <label className="form-label">Department *</label>
                   <input
                     type="text"
                     className="form-input"
@@ -98,7 +106,7 @@ export default function Profile() {
               </div>
 
               <div className="form-field">
-                <label className="form-label">Hostel / Campus Residence</label>
+                <label className="form-label">Hostel / Campus Residence *</label>
                 <input
                   type="text"
                   className="form-input"
@@ -141,7 +149,7 @@ export default function Profile() {
               </div>
 
               <div className="form-field" style={{ marginTop: '20px' }}>
-                <label className="form-label">Skills & Capabilities</label>
+                <label className="form-label">Skills & Capabilities ({profile.skills.length} Selected)</label>
                 <div className="chip-grid" style={{ marginTop: '8px' }}>
                   {allSkills.map((s) => {
                     const active = profile.skills.some((sk) => sk.name === s)
@@ -160,12 +168,12 @@ export default function Profile() {
               </div>
 
               <button type="submit" className="btn btn--primary" style={{ width: '100%', marginTop: '24px' }}>
-                💾 Save Student Profile
+                💾 Save Student Profile & Update Passport
               </button>
 
               {saved && (
                 <div className="save-success" role="status" style={{ marginTop: '12px', textAlign: 'center' }}>
-                  ✓ Profile saved! Persistence updated.
+                  🎉 Profile saved! Verified passport updated.
                 </div>
               )}
             </form>

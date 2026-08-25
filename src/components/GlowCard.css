@@ -1,0 +1,89 @@
+/* GlowCard — 21st.dev premium spotlight-card */
+.glow-card {
+  --x: 50%;
+  --y: 50%;
+  --xp: 0.5;
+  --base: 220;
+  --spread: 180;
+  --radius: 16;
+
+  position: relative;
+  background: rgba(22, 22, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: calc(var(--radius) * 1px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px;
+  transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+  overflow: hidden;
+}
+
+.glow-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(168, 85, 247, 0.3);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(99, 102, 241, 0.15);
+}
+
+.glow-card--green:hover {
+  border-color: rgba(34, 197, 94, 0.35);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(34, 197, 94, 0.15);
+}
+
+.glow-card--purple:hover {
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(168, 85, 247, 0.15);
+}
+
+/* Animated border glow — masked gradient ring */
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--radius) * 1px);
+  padding: 1.5px;
+  opacity: 0.2;
+  transition: opacity var(--transition-base);
+  background: radial-gradient(
+    280px circle at
+    calc(var(--glow-x, 150) * 1px)
+    calc(var(--glow-y, 150) * 1px),
+    hsl(calc(var(--base) + (var(--xp, 0.5) * var(--spread))) 95% 65% / 0.8),
+    transparent 60%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+/* Inner spotlight fill */
+.glow-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--radius) * 1px);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  background: radial-gradient(
+    320px circle at
+    calc(var(--glow-x, 150) * 1px)
+    calc(var(--glow-y, 150) * 1px),
+    hsl(calc(var(--base) + (var(--xp, 0.5) * var(--spread))) 85% 60% / 0.1),
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+.glow-card:hover::after {
+  opacity: 1;
+}
+
+.glow-card > * {
+  position: relative;
+  z-index: 1;
+}

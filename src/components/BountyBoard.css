@@ -1,0 +1,81 @@
+.bounty-section {
+  padding: 80px 0;
+}
+
+.bounty-pill {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-indigo);
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.bounty-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.bounty-form-card {
+  padding: 28px !important;
+}
+
+.bounty-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bounty-item {
+  padding: 20px !important;
+}
+
+.bounty-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.bounty-user {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.bounty-item-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.bounty-reward {
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 14px;
+
+  border: 1px solid var(--border-primary);
+}
+
+.bounty-reward strong {
+  color: var(--warning);
+}
+
+.bounty-claim-btn {
+  width: 100%;
+}
+
+@media (max-width: 850px) {
+  .bounty-grid {
+    grid-template-columns: 1fr;
+  }
+}

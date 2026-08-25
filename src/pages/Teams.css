@@ -1,0 +1,196 @@
+/* Teams page */
+.teams-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.team-list-card {
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.team-list-card:focus-visible {
+  outline: 2px solid var(--accent-indigo);
+  outline-offset: 2px;
+}
+
+.team-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.team-list-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.status {
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status--active {
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status--forming {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status--completed {
+  background: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.team-list-avatars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 14px;
+}
+
+.team-avatar {
+  font-size: 20px;
+}
+
+.team-count {
+  margin-left: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.team-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.team-progress-track {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--bg-primary);
+  overflow: hidden;
+}
+
+.team-progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--accent-gradient);
+  transition: width var(--transition-slow);
+}
+
+/* Details */
+.team-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.team-detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.team-detail-name {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.team-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.team-stat {
+  text-align: center;
+  padding: 18px 12px;
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+}
+
+.team-stat-value {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.team-stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.member-side {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.member-avail {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.member-projects {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Skill map */
+.skill-map {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.skill-map-cell {
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+}
+
+.skill-map-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.skill-map-holders {
+  display: flex;
+  gap: 2px;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.skill-map-count {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 600px) {
+  .team-stats {
+    grid-template-columns: 1fr;
+  }
+  .skill-map {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

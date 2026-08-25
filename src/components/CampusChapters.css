@@ -1,0 +1,121 @@
+.chapters-section {
+  padding: 96px 0;
+  position: relative;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.chapters-tag-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent-text);
+  margin-bottom: 8px;
+}
+
+.chapters-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chapter-row {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 24px 32px;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+}
+
+.chapter-row:hover {
+  border-color: var(--accent-indigo);
+  background: var(--bg-card);
+  transform: translateX(4px);
+}
+
+.chapter-num {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 32px;
+}
+
+.chapter-row:hover .chapter-num {
+  color: var(--accent-text);
+}
+
+.chapter-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chapter-kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+
+.chapter-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.chapter-desc {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.chapter-line {
+  height: 1px;
+  background: var(--border-subtle);
+  width: 100%;
+  margin-top: 8px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-base);
+}
+
+.chapter-row:hover .chapter-line {
+  transform: scaleX(1);
+  background: var(--accent-indigo);
+}
+
+.chapter-cta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.chapter-row:hover .chapter-cta {
+  color: var(--accent-text);
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .chapter-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 20px;
+  }
+  .chapter-cta {
+    align-self: flex-end;
+  }
+}

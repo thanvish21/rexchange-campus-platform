@@ -26,71 +26,52 @@ export function Hero() {
 
   return (
     <section className="hero" aria-labelledby="hero-title">
-      {/* Dynamic Ambient Background Mesh & Top Horizon Beam */}
-      <div className="hero-mesh" aria-hidden="true">
-        <div className="hero-grid-pattern"></div>
-        <div className="hero-top-beam"></div>
-        <div className="mesh-orb mesh-orb-1"></div>
-        <div className="mesh-orb mesh-orb-2"></div>
-        <div className="mesh-orb mesh-orb-3"></div>
-      </div>
-
       <div className="container">
         <div className="hero-grid">
-          {/* Left Hero Main Content */}
+          {/* Main Hero Content Column */}
           <div className="hero-content">
-            {/* Live Eyebrow Badge with Radar Beacon */}
+            {/* Simple Eyebrow Badge */}
             <div className="hero-eyebrow animate-fade-in-up">
-              <div className="eyebrow-badge">
-                <span className="live-beacon">
-                  <span className="beacon-ping"></span>
-                  <span className="beacon-core"></span>
-                </span>
-                <span className="eyebrow-text">SRM & CAMPUS PEER NETWORK</span>
-                <span className="eyebrow-highlight">LIVE • 1,200+ ACTIVE LISTINGS</span>
-              </div>
+              <span className="eyebrow-badge">
+                <span className="live-dot" /> SRM Campus Peer Exchange
+              </span>
             </div>
 
-            {/* High-Impact High Contrast Headline */}
+            {/* Clean, Readable Headline */}
             <h1 id="hero-title" className="hero-headline">
-              <span className="headline-solid">Everything your campus already owns.</span>
-              <span className="headline-gradient">Now 1-click away from your dorm.</span>
+              Buy, sell, and borrow student gear across your campus.
             </h1>
 
-            {/* Subtitle */}
+            {/* Clear Subtitle */}
             <p className="hero-subtitle">
-              Buy/sell textbooks, borrow lab gear, trade dorm favors for cold coffee, and match with hackathon teammates using AI skill compatibility.
+              Connect with verified students in your hostels to trade textbooks, calculators, study notes, and dorm essentials with zero platform fees.
             </p>
 
-            {/* Quick Hero Search Bar */}
+            {/* Clean Hero Search Bar */}
             <form className="hero-search-form animate-fade-in-up" onSubmit={handleHeroSearchSubmit}>
               <div className="hero-search-wrap">
                 <span className="hero-search-icon"><Icon name="search" size={18} /></span>
                 <input
                   type="text"
                   className="hero-search-input"
-                  placeholder="Search textbooks, calculators, notes, or skills (e.g. TI-84, DSA)..."
+                  placeholder="Search textbooks, calculators, notes, or dorm gear..."
                   value={heroSearch}
                   onChange={(e) => setHeroSearch(e.target.value)}
                 />
                 <button type="submit" className="btn btn--primary hero-search-btn">
-                  Search Campus →
+                  Search
                 </button>
               </div>
             </form>
 
-            {/* Primary CTA Buttons */}
+            {/* Action Buttons */}
             <div className="hero-cta-group animate-fade-in-up">
               <Link
                 to="/browse"
-                className="btn btn--primary hero-cta-primary glow-button"
+                className="btn btn--primary hero-cta-primary"
                 onClick={() => sounds.playPop()}
               >
-                <span className="btn-content">
-                  📦 Browse Campus Gear
-                  <Icon name="arrowUpRight" size={18} className="cta-icon" />
-                </span>
-                <div className="btn-shine"></div>
+                Browse Marketplace →
               </Link>
 
               <Link
@@ -98,84 +79,56 @@ export function Hero() {
                 className="btn btn--ghost hero-cta-secondary"
                 onClick={() => sounds.playPop()}
               >
-                <Icon name="sparkles" size={16} className="secondary-icon" />
-                <span>⚡ AI Teammate Matcher</span>
+                Find a Teammate
               </Link>
             </div>
 
-            {/* Interactive Quick Category Pills */}
+            {/* Quick Category Chips */}
             <div className="hero-subbar animate-fade-in-up">
-              <div className="subbar-header">
-                <span className="subbar-label">Instant Campus Categories:</span>
-                <span className="subbar-live-tag">⚡ 0% Platform Fees</span>
-              </div>
+              <span className="subbar-label">Popular Categories:</span>
               <div className="subbar-chips">
                 <button type="button" className="subbar-chip" onClick={() => handleChipClick('Textbooks')}>
-                  <Icon name="book" size={13} className="chip-icon" /> 📚 Textbooks (₹150 avg)
+                  📚 Textbooks
                 </button>
                 <button type="button" className="subbar-chip" onClick={() => handleChipClick('Electronics')}>
-                  <Icon name="cpu" size={13} className="chip-icon" /> 💻 Calculators & Kits
+                  💻 Calculators & Electronics
                 </button>
                 <button type="button" className="subbar-chip" onClick={() => handleChipClick('Notes')}>
-                  <Icon name="code" size={13} className="chip-icon" /> 📝 Free Study Notes
+                  📝 Study Notes
                 </button>
                 <button type="button" className="subbar-chip" onClick={() => handleChipClick('Skills')}>
-                  <Icon name="swap" size={13} className="chip-icon" /> 🤝 Peer Skill Trades
+                  🤝 Skill Trades
                 </button>
                 <button type="button" className="subbar-chip" onClick={() => handleChipClick('Dorm')}>
-                  <Icon name="shield" size={13} className="chip-icon" /> 🍕 Dorm Favors
+                  🍕 Dorm Favors
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Right Hero Preview Section */}
-          <div className="hero-widget-wrapper animate-fade-in-up" style={{ animationDelay: '150ms' }}>
-            {/* Top Activity Pill */}
-            <div className="floating-pill floating-pill-top">
-              <span className="pill-dot"></span>
-              <span className="pill-text">⚡ Handover in 10 mins • Block A Lobby Desk</span>
-            </div>
-
-            {/* Bottom Synergy Match Pill */}
-            <div className="floating-pill floating-pill-bottom">
-              <span className="pill-emoji">🔥</span>
-              <span className="pill-text"><strong>98% Team Match</strong> for React + PyTorch</span>
-            </div>
-
-            {/* Featured Marketplace GlowCard */}
-            <GlowCard glowColor="purple" className="widget-card">
+          {/* Right Featured Card */}
+          <div className="hero-widget-wrapper animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+            <GlowCard glowColor="blue" className="widget-card">
               <div className="widget-top">
-                <div className="widget-badge-group">
-                  <span className="badge badge--giveaway">
-                    <Icon name="shield" size={12} /> SRM VERIFIED
-                  </span>
-                  <span className="widget-status-tag">⚡ FREE GIVEAWAY</span>
-                </div>
+                <span className="badge badge--giveaway">CAMPUS VERIFIED</span>
                 <span className="widget-time">Block A • 4 mins ago</span>
               </div>
 
               <h3 className="widget-title">TI-84 Plus CE Graphing Calculator</h3>
               <p className="widget-desc">
-                Clean condition with rechargeable battery & USB cable. Perfect for Eng Math Vol 3 & Stats lab exams.
+                Includes rechargeable battery & USB cable. Perfect for Engineering Mathematics & Statistics labs.
               </p>
 
               <div className="widget-tags">
                 <span className="tag-pill">Electronics</span>
-                <span className="tag-pill">Hostel Block A</span>
-                <span className="tag-pill">Verified Student</span>
+                <span className="tag-pill">Block A Hostel</span>
               </div>
 
               <div className="widget-user">
-                <div className="widget-avatar-wrapper">
-                  <span className="widget-avatar">👩‍💻</span>
-                  <span className="avatar-online-ring" title="Active on campus now"></span>
-                </div>
+                <span className="widget-avatar">👩‍💻</span>
                 <div className="widget-meta">
-                  <div className="widget-username">
-                    Ananya Patel <span className="user-role-badge">Junior 3rd Yr</span>
-                  </div>
-                  <div className="widget-userstats">SRMIST • CSE Dept • ⭐ 4.9 (24 swaps)</div>
+                  <div className="widget-username">Ananya Patel</div>
+                  <div className="widget-userstats">SRMIST • CSE Dept</div>
                 </div>
                 <div className="widget-action-box">
                   <span className="widget-price">₹350</span>

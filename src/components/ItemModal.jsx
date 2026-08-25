@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { userById } from '../data/mockData.js'
 import { recordConnection, getRemainingFree } from '../lib/connections.js'
+import { useFocusTrap } from '../hooks/useFocusTrap.js'
 import './ItemModal.css'
 
 export default function ItemModal({ item, onClose, onOpenChat, onOpenPaywall }) {
   const [requested, setRequested] = useState(false)
+  const modalRef = useFocusTrap({ isOpen: Boolean(item), onClose })
+
   if (!item) return null
 
   const seller = userById(item.postedBy)
@@ -24,8 +27,8 @@ export default function ItemModal({ item, onClose, onOpenChat, onOpenPaywall }) 
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="modal-content glass-panel animate-fade-in-up" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="modal-item-title">
+      <div ref={modalRef} className="modal-content glass-panel animate-fade-in-up" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close-btn" onClick={onClose} aria-label="Close modal">
           ✕
         </button>
@@ -38,57 +41,55 @@ export default function ItemModal({ item, onClose, onOpenChat, onOpenPaywall }) 
               <span className="modal-condition">{item.condition}</span>
               <span className="modal-posted">{item.postedAt}</span>
             </div>
-            <h2 className="modal-title">{item.title}</h2>
+            <h2 id="modal-item-title" className="modal-title">{item.title}</h2>
           </div>
         </div>
 
         <div className="modal-body">
-          <div className="modal-price-box">
-            <span className="price-label">Price / Term</span>
-            <div className="price-value">
-              {item.price === 0 ? <span className="price--free">FREE GIVEAWAY</span> : `₹${item.price.toLocaleString('en-IN')}`}
-            </div>
-          </div>
-
-          <div className="modal-desc-box">
-            <h4 className="desc-heading">Description & Details</h4>
-            <p className="desc-text">{item.description}</p>
-          </div>
+          <p className="modal-description">{item.description}</p>
 
           <div className="modal-tags">
-            {item.tags?.map((t) => (
-              <span key={t} className="skill-tag">#{t}</span>
+            {item.tags.map((tag) => (
+              <span key={tag} className="tag-pill">
+                #{tag}
+              </span>
             ))}
           </div>
 
-          <div className="modal-location">
-            <span>📍 Pickup Location:</span> <strong>{item.location}</strong>
-          </div>
-
-          <div className="seller-card">
-            <span className="seller-avatar">{seller.avatar}</span>
+          <div className="modal-seller-card surface">
+            <div className="seller-avatar">{seller.avatar}</div>
             <div className="seller-info">
-              <div className="seller-name">
-                {seller.name} {seller.verified && <span className="verified-badge" title="Verified College Student">✓ Campus Verified</span>}
+              <div className="seller-name-row">
+                <span className="seller-name">{seller.name}</span>
+                {seller.verified && <span className="verified-chip">✓ Campus Verified</span>}
               </div>
-              <div className="seller-sub">{seller.department} • {seller.hostel}</div>
-              <div className="seller-stats">
-                ★ {seller.rating} rating • {seller.exchanges} successful exchanges
+              <p className="seller-dept">
+                {seller.dept} • {seller.role}
+              </p>
+              <div className="seller-meta">
+                <span>📍 Pickup Spot: {item.location}</span>
+                <span>⭐ {seller.rating} ({seller.swapsCount} swaps)</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="modal-footer">
-          <button className="btn btn--ghost" onClick={onClose}>
-            Close
-          </button>
+          <div className="modal-price-row">
+            <span className="price-label">{item.price === 0 ? 'Giveaway' : 'Price'}</span>
+            <span className="price-value">{item.price === 0 ? 'FREE' : `₹${item.price}`}</span>
+          </div>
+
           <button
-            className={`btn btn--primary ${requested ? 'btn--success' : ''}`}
+            className={`btn btn--primary connect-btn ${requested ? 'btn--success' : ''}`}
             onClick={handleConnect}
             disabled={requested}
           >
-            {requested ? '✓ Connection Initiated! Opening Chat...' : '⚡ Initiate Exchange →'}
+            {requested
+              ? '✓ Connection Sent!'
+              : item.price === 0
+                ? '🎁 Claim Free Giveaway'
+                : `⚡ Connect with ${seller.name.split(' ')[0]}`}
           </button>
         </div>
       </div>

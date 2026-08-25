@@ -4,7 +4,7 @@ const FREE_LIMIT = 5
 export function getConnectionsUsed() {
   try {
     return parseInt(localStorage.getItem(KEY) || '0', 10)
-  } catch {
+  } catch (err) {
     return 0
   }
 }
@@ -20,16 +20,16 @@ export function isPaywalled() {
 export function recordConnection() {
   try {
     localStorage.setItem(KEY, String(getConnectionsUsed() + 1))
-  } catch {
-    /* private mode */
+  } catch (err) {
+    /* private mode fallback */
   }
 }
 
 export function resetConnections() {
   try {
     localStorage.removeItem(KEY)
-  } catch {
-    /* private mode */
+  } catch (err) {
+    /* private mode fallback */
   }
 }
 

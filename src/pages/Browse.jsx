@@ -254,13 +254,14 @@ export default function Browse() {
         <ItemModal
           item={activeItem}
           onClose={() => setActiveItem(null)}
-          onInitiateChat={(seller) => setActiveChat(seller)}
-          onShowPayment={() => setShowPayment(true)}
+          onOpenChat={(seller) => setActiveChat(seller)}
+          onOpenPaywall={() => setShowPayment(true)}
         />
       )}
 
       {activeChat && (
         <ChatModal
+          isOpen={Boolean(activeChat)}
           seller={activeChat}
           onClose={() => setActiveChat(null)}
         />

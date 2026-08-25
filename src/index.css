@@ -43,9 +43,11 @@
   --text-muted: #71717a;
   --text-inverse: #09090b;
 
-  /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  /* Typography System — Premium 2026 SaaS Font Family Hierarchy */
+  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+  --font-hero: 'Syne', 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Space Grotesk', monospace;
 
   /* Spacing Scale (8px Grid) */
   --space-1: 4px;
@@ -175,37 +177,43 @@ select:focus-visible {
 
 /* Typography Utilities */
 .text-heading-xl {
-  font-size: clamp(2.25rem, 5vw, 3.75rem);
-  font-weight: 700;
+  font-family: var(--font-hero);
+  font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+  font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.1;
+  line-height: 1.08;
 }
 
 .text-heading-lg {
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
   font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
 }
 
 .text-heading-md {
+  font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
 .text-body {
+  font-family: var(--font-sans);
   font-size: 0.9375rem;
   color: var(--text-secondary);
 }
 
 .text-muted {
+  font-family: var(--font-sans);
   font-size: 0.8125rem;
   color: var(--text-muted);
 }
 
 .mono {
   font-family: var(--font-mono);
+  letter-spacing: 0.05em;
 }
 
 /* Accessibility Reduced Motion */
